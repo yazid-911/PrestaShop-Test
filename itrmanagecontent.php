@@ -73,7 +73,8 @@ class Itrmanagecontent extends Module
             $this->registerHook('displayCustomerAccount') &&
             $this->registerHook('displayNav') &&
             $this->registerHook('displayProductButtons') &&
-            $this->registerHook('displayProductExtraContent');
+            $this->registerHook('displayProductExtraContent') &&
+            $this->registerHook('displayHome');
     }
 
     public function uninstall()
@@ -237,4 +238,15 @@ class Itrmanagecontent extends Module
     {
         /* Place your code here. */
     }
+
+    public function hookDisplayHome()
+    {
+        $isLogged = $this->context->customer->isLogged();
+        $content = $isLogged
+            ? Configuration::get('ITR_HTML_LOGGED')
+            : Configuration::get('ITR_HTML_GUEST');
+
+        return $content;
+    }
+
 }
