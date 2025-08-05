@@ -28,6 +28,9 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
+
+
 class Itrmanagecontent extends Module
 {
     protected $config_form = false;
@@ -100,10 +103,44 @@ class Itrmanagecontent extends Module
 
         $this->context->smarty->assign('module_dir', $this->_path);
 
-        $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
+        $output = '';
 
-        return $output.$this->renderForm();
+        $output .= $this->renderStats(); 
+        $output .= $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
+        $output .= $this->renderForm();
+
+        return $output;
+  
     }
+
+    protected function renderStats()
+    {
+        $sql_customers = 'SELECT COUNT(*) FROM '._DB_PREFIX_.'customer WHERE active = 1';
+        $sql_orders = 'SELECT COUNT(*) FROM '._DB_PREFIX_.'orders WHERE valid = 1';
+        $sql_total_sales = 'SELECT SUM(total_paid) FROM '._DB_PREFIX_.'orders WHERE valid = 1';
+
+        $nb_customers = Db::getInstance()->getValue($sql_customers);
+        $nb_orders = Db::getInstance()->getValue($sql_orders);
+        $total_sales = Db::getInstance()->getValue($sql_total_sales);
+        $total_sales = $total_sales ?? 0;
+
+        $priceFormatter = new PriceFormatter();
+        $formattedTotalSales = $priceFormatter->format($total_sales, (int)Configuration::get('PS_CURRENCY_DEFAULT'));
+
+        return '
+        <div class="panel">
+            <h3><i class="icon-bar-chart"></i> Statistiques générales</h3>
+            <ul>
+                <li><strong>Clients actifs :</strong> '.$nb_customers.'</li>
+                <li><strong>Commandes validées :</strong> '.$nb_orders.'</li>
+                <li><strong>Total des ventes :</strong> '.$formattedTotalSales.'</li>
+            </ul>
+        </div>';
+    }
+
+
+
+
 
     /**
      * Create the form that will be displayed in the configuration of your module.
