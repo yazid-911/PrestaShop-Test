@@ -140,49 +140,34 @@ class Itrmanagecontent extends Module
         return array(
             'form' => array(
                 'legend' => array(
-                'title' => $this->l('Settings'),
-                'icon' => 'icon-cogs',
+                    'title' => $this->l('Paramètres des blocs HTML'),
+                    'icon' => 'icon-html5',
                 ),
                 'input' => array(
                     array(
-                        'type' => 'switch',
-                        'label' => $this->l('Live mode'),
-                        'name' => 'ITRMANAGECONTENT_LIVE_MODE',
-                        'is_bool' => true,
-                        'desc' => $this->l('Use this module in live mode'),
-                        'values' => array(
-                            array(
-                                'id' => 'active_on',
-                                'value' => true,
-                                'label' => $this->l('Enabled')
-                            ),
-                            array(
-                                'id' => 'active_off',
-                                'value' => false,
-                                'label' => $this->l('Disabled')
-                            )
-                        ),
+                        'type' => 'textarea',
+                        'label' => $this->l('Bloc HTML (utilisateur NON connecté)'),
+                        'name' => 'ITR_HTML_GUEST',
+                        'autoload_rte' => true, // Active l'éditeur WYSIWYG
+                        'desc' => $this->l('Contenu HTML à afficher aux visiteurs non connectés.'),
+                        'lang' => false,
                     ),
                     array(
-                        'col' => 3,
-                        'type' => 'text',
-                        'prefix' => '<i class="icon icon-envelope"></i>',
-                        'desc' => $this->l('Enter a valid email address'),
-                        'name' => 'ITRMANAGECONTENT_ACCOUNT_EMAIL',
-                        'label' => $this->l('Email'),
-                    ),
-                    array(
-                        'type' => 'password',
-                        'name' => 'ITRMANAGECONTENT_ACCOUNT_PASSWORD',
-                        'label' => $this->l('Password'),
+                        'type' => 'textarea',
+                        'label' => $this->l('Bloc HTML (utilisateur CONNECTÉ)'),
+                        'name' => 'ITR_HTML_LOGGED',
+                        'autoload_rte' => true,
+                        'desc' => $this->l('Contenu HTML à afficher aux utilisateurs connectés.'),
+                        'lang' => false,
                     ),
                 ),
                 'submit' => array(
-                    'title' => $this->l('Save'),
+                    'title' => $this->l('Enregistrer'),
                 ),
             ),
         );
     }
+
 
     /**
      * Set values for the inputs.
@@ -190,11 +175,11 @@ class Itrmanagecontent extends Module
     protected function getConfigFormValues()
     {
         return array(
-            'ITRMANAGECONTENT_LIVE_MODE' => Configuration::get('ITRMANAGECONTENT_LIVE_MODE', true),
-            'ITRMANAGECONTENT_ACCOUNT_EMAIL' => Configuration::get('ITRMANAGECONTENT_ACCOUNT_EMAIL', 'contact@prestashop.com'),
-            'ITRMANAGECONTENT_ACCOUNT_PASSWORD' => Configuration::get('ITRMANAGECONTENT_ACCOUNT_PASSWORD', null),
+            'ITR_HTML_GUEST' => Configuration::get('ITR_HTML_GUEST'),
+            'ITR_HTML_LOGGED' => Configuration::get('ITR_HTML_LOGGED'),
         );
     }
+
 
     /**
      * Save form data.
