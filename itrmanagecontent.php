@@ -29,7 +29,7 @@ if (!defined('_PS_VERSION_')) {
 }
 
 use PrestaShop\PrestaShop\Adapter\Product\PriceFormatter;
-
+use PrestaShop\PrestaShop\Adapter\Product;
 
 class Itrmanagecontent extends Module
 {
@@ -77,7 +77,9 @@ class Itrmanagecontent extends Module
             $this->registerHook('displayNav') &&
             $this->registerHook('displayProductButtons') &&
             $this->registerHook('displayProductExtraContent') &&
-            $this->registerHook('displayHome');
+            $this->registerHook('displayHome') &&
+            $this->registerHook('displayTop');
+
     }
 
     public function uninstall()
@@ -284,6 +286,65 @@ class Itrmanagecontent extends Module
             : Configuration::get('ITR_HTML_GUEST');
 
         return $content;
+    }
+
+    public function hookDisplayTop($params)
+    {
+        $context  = Context::getContext();
+        $customer = $context->customer;
+
+        // On  laisse que les clients loggés du groupe "Administrateur Front"
+        if (!$customer->isLogged()) {
+            return '';
+        }
+        $allowed = false;
+        foreach ($customer->getGroups() as $id_group) {
+            $group = new Group($id_group);
+            if (isset($group->name[$context->language->id])
+                && $group->name[$context->language->id] === 'Administrateur Front'
+            ) {
+                $allowed = true;
+                break;
+            }
+        }
+        if (!$allowed) {
+            return '';
+        }
+
+        //Nombre de produits actifs
+        $nb_products = (int) Db::getInstance()->getValue(
+            'SELECT COUNT(*) FROM `' . _DB_PREFIX_ . 'product` WHERE active = 1'
+        );
+
+        
+        $avg_cart = Db::getInstance()->getValue(
+            'SELECT AVG(total_paid) FROM `' . _DB_PREFIX_ . 'orders` WHERE valid = 1'
+        ) ?: 0;
+        $formatted_avg_cart = $context->currentLocale->formatPrice(
+            (float) $avg_cart,
+            $context->currency->iso_code
+        );
+
+        // 4) Produit le plus commandé via la méthode cœur (PAS de SQL à la main)
+        $bestSales = ProductSaleCore::getBestSales((int)$this->context->language->id, 0, 1);
+        if (!empty($bestSales)) {
+            $best = $bestSales[0];
+            $product_name = $best['name'];
+            $product_link = $this->context->link->getProductLink((int)$best['id_product']);
+        } else {
+            $product_name = 'Aucun produit';
+            $product_link = '#';
+        }
+
+        // 5) On alimente le template
+        $this->context->smarty->assign([
+            'nb_products'  => $nb_products,
+            'avg_cart'     => $formatted_avg_cart,
+            'product_name' => $product_name,
+            'product_link' => $product_link,
+        ]);
+
+        return $this->display(__FILE__, 'views/templates/hook/admin_front_banner.tpl');
     }
 
 }
