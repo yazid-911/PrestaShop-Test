@@ -5,7 +5,8 @@
 ## 1. Mise en place initiale  
 - **Création du squelette du module**  
   - Fichiers de base (`itrmanagecontent.php`, `install.php`, `uninstall.php`, dossier `views/…`)  
-  - Enregistrement des hooks essentiels (`header`, `displayBackOfficeHeader`, `displayHome`, `displayTop`, `displayFooterProduct`, ...) 
+  - Enregistrement des hooks essentiels (`header`, `displayBackOfficeHeader`, `displayHome`, `displayTop`, `displayFooterProduct`, ...)
+  - Configuration de Prestashop avec XAMPP
 
 ---
 
