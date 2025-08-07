@@ -43,19 +43,18 @@
 ## Où je suis arrivé :
 
 ## 4. Signalement d’erreur produit (feature AJAX)  
-Hook "displayFooterProduct()"
-- Injection du template "error_report_button.tpl" juste sous le bouton « Ajouter au panier ».
-Interface front-end :
-- Ajout d’un bouton Signaler une erreur
-- Affichage d’une modal (jQuery) contenant :
-- Une textarea pour la description
-- Un bouton Envoyer et un bouton Fermer
-- Comportement JavaScript
-- Ouverture/fermeture de la modal sans rechargement de la page
-- Fermeture automatique de la modal
-- Traitement serveur (submitError in itrmanagecontent.php)
-- Insertion du signalement dans une table error_reports
-- Envoi d’un email à l’administrateur 
+  - Hook "displayFooterProduct()"
+  - Injection du template "error_report_button.tpl" juste sous le bouton « Ajouter au panier ».
+  - Ajout d’un bouton Signaler une erreur
+  - Affichage d’une modal (jQuery) contenant :
+  - Une textarea pour la description
+  - Un bouton Envoyer et un bouton Fermer
+  - Comportement JavaScript
+  - Ouverture/fermeture de la modal sans rechargement de la page
+  - Fermeture automatique de la modal
+  - Traitement serveur (submitError in itrmanagecontent.php)
+  - Insertion du signalement dans une table error_reports
+  - Envoi d’un email à l’administrateur 
 
 C’est la solution que j’avais envisagée pour cette fonctionnalité, j’ai commencé son développement, mais j’ai rencontré des difficultés, en particulier pour connecter correctement le bouton à la fenêtre modale d’envoi de message, ce qui m’a empêché de terminer la mise en œuvre.
 
