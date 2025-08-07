@@ -328,7 +328,6 @@ class Itrmanagecontent extends Module
             $context->currency->iso_code
         );
 
-        // 4) Produit le plus commandé via la méthode cœur (PAS de SQL à la main)
         $bestSales = ProductSaleCore::getBestSales((int)$this->context->language->id, 0, 1);
         if (!empty($bestSales)) {
             $best = $bestSales[0];
@@ -339,7 +338,6 @@ class Itrmanagecontent extends Module
             $product_link = '#';
         }
 
-        // 5) On alimente le template
         $this->context->smarty->assign([
             'nb_products'  => $nb_products,
             'avg_cart'     => $formatted_avg_cart,

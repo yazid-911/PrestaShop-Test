@@ -2,11 +2,13 @@
 
 ---
 
-## 1. Mise en place initiale  
-- **Création du squelette du module**  
+## 1. Mise en place initiale   
+  - Installation de Prestashop et creation du module "itrmanagecotent"
   - Fichiers de base (`itrmanagecontent.php`, `install.php`, `uninstall.php`, dossier `views/…`)  
   - Enregistrement des hooks essentiels (`header`, `displayBackOfficeHeader`, `displayHome`, `displayTop`, `displayFooterProduct`, ...)
   - Configuration de Prestashop avec XAMPP
+  - lancement local sur VScode et localhost
+  - creation de la base de donnees sur phpMyAdmin
 
 ---
 
