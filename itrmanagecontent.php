@@ -114,7 +114,7 @@ class Itrmanagecontent extends Module
         return $output;
   
     }
-
+    // bloc de statistiques du back office
     protected function renderStats()
     {
         $sql_customers = 'SELECT COUNT(*) FROM '._DB_PREFIX_.'customer WHERE active = 1';
@@ -175,6 +175,8 @@ class Itrmanagecontent extends Module
     /**
      * Create the structure of your form.
      */
+
+    // methode pour la configuration de ce qui va etre affiché dans le front office pour les utilisateurs connectés et non connectés
     protected function getConfigForm()
     {
         return array(
@@ -188,7 +190,7 @@ class Itrmanagecontent extends Module
                         'type' => 'textarea',
                         'label' => $this->l('Bloc HTML (utilisateur NON connecté)'),
                         'name' => 'ITR_HTML_GUEST',
-                        'autoload_rte' => true, // Active l'éditeur WYSIWYG
+                        'autoload_rte' => true,
                         'desc' => $this->l('Contenu HTML à afficher aux visiteurs non connectés.'),
                         'lang' => false,
                     ),
@@ -277,7 +279,7 @@ class Itrmanagecontent extends Module
     {
         /* Place your code here. */
     }
-
+    // methode pour verifier si l'utilisateur est connecté ou non et afficher le contenu approprié
     public function hookDisplayHome()
     {
         $isLogged = $this->context->customer->isLogged();
@@ -288,6 +290,7 @@ class Itrmanagecontent extends Module
         return $content;
     }
 
+    //quand l'utilisateur est connecté, on affiche le nombre de produits actifs, le panier moyen et le produit le plus commandé
     public function hookDisplayTop($params)
     {
         $context  = Context::getContext();
